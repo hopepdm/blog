@@ -1,35 +1,10 @@
-# jekyll-theme-EasyBook
+# EasyBook-blog
 
 Another Jekyll Blog Theme "EasyBook"
 
-Start blogging with a simple but powerful theme.
+本项目参考laobubu的主题，在其基础上做了部分修改。目的是锻炼自己前端技能。
 
-## Features
 
-- Everything Basic Jekyll has.
-- **Pagination** is enabled.
-- **Comments** using Disqus or 多说.
-- **TOC** makes reading easier.
-- **Profile** including your links and avatar on the sidebar.
-- *And more...*
-
-## Install
-
-Read [Quick Guide] to learn how to install and publish.
-
-Read [Welcome to Jekyll and EasyBook][helloPost] and [Jekyll][jekyll] for further information.
-
-**If need help, please:**
-
- - [**Read Wiki pages**](https://github.com/laobubu/jekyll-theme-EasyBook/wiki)
- - **Google it**
- - [**Submit an issue**](https://github.com/laobubu/jekyll-theme-EasyBook/issues/new)
-
-## Donate
-
-Buy me a coffee if you find EasyBook useful for you :smiley:
-
-Visit <http://laobubu.net/donate.html>
 
 ## Demo
 
