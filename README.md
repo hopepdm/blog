@@ -10,7 +10,8 @@ Another Jekyll Blog Theme "EasyBook"
 
 [laobubu's blog](http://blog.laobubu.net) | [empty site](http://laobubu.github.io/jekyll-theme-EasyBook)
 
-![Homepage](https://hopepdm.github.io/blog/image/2.jpg)
+![Homepage]
+https://hopepdm.github.io/blog/image/2.jpg
 
 ## License
 
