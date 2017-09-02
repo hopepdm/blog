@@ -3,8 +3,8 @@ layout: default
 ---
 
 <div class="home">
-  <a class="rss-link" href="{{ "/feed.xml" | prepend: site.baseurl }}">RSS Feed</a>
-  <h1 class="page-heading">Articles</h1>
+  <a class="rss-link" href="{{ "/feed.xml" | prepend: site.baseurl }}">等风来</a>
+  <p><span class="page-heading">路阻且长</span><i class="page-heading2">孤独的人没有酒</i></p>
 
   <ul class="post-list">
     {% for post in paginator.posts %}
@@ -28,15 +28,15 @@ layout: default
   <!-- Pagination links -->
 <div class="pagination">
   {% if paginator.previous_page %}
-    <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}" class="previous">PREV</a>
+    <a href="{{ paginator.previous_page_path | prepend: site.baseurl }}" class="previous">←</a>
   {% else %}
-    <span class="previous">PREV</span>
+    <span class="previous">←</span>
   {% endif %}
-  <span class="page_number ">{{ paginator.page }} of {{ paginator.total_pages }}</span>
+  <span class="page_number ">{{ paginator.page }} 😜 {{ paginator.total_pages }}</span>
   {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path | prepend: site.baseurl }}" class="next">NEXT</a>
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl }}" class="next">→</a>
   {% else %}
-    <span class="next ">NEXT</span>
+    <span class="next ">→</span>
   {% endif %}
 </div>
 

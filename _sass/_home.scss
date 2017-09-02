@@ -2,11 +2,15 @@
 .page-heading {
 	font-size:40px;
 	font-weight: normal;
-	margin: 20px;
+	margin: 0 5px 0 20px;
     @include media-query($on-palm) {
 		margin: 10px;
 		font-size: 34px;
     }
+}
+.page-heading2 {
+	font-size:25px;
+	font-weight: normal;
 }
 .rss-link {
 	float:right;
@@ -16,6 +20,7 @@
     background: #fff;
     font-size: 0.7 * $base-font-size;
     padding: 1px 8px;
+	border-radius: 6px;
     
     &:hover, &:focus {
         color: #666;

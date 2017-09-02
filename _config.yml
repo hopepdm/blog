@@ -1,6 +1,6 @@
 # Site settings
 title: Hopepdm's Blog
-url: "https://hopepdm.github.io/curousel/"    # the protocol and hostname of your site, eg. `http://laobubu.github.io`
+url: "https://hopepdm.github.io/"    # the protocol and hostname of your site, eg. `http://laobubu.github.io`
 baseurl: "/blog" # the prefix of your site uri, eg. `/jekyll-theme-EasyBook` or just one slash `/`
 #timezone: Asia/Chongqing
 description: >
@@ -16,7 +16,7 @@ github_username:  hopepdm
 
 # Comment Service (Disqus or 多说)
 #  choose one and un-comment the line to active it
-#disqus_shortname: xxx   # get one: https://disqus.com/admin/signup/
+disqus_shortname: xxx   # get one: https://disqus.com/admin/signup/
 #duoshuo_shortname: xxx  # get one: http://duoshuo.com/create-site/
 
 permalink: /archivers/:title
@@ -26,7 +26,7 @@ plugins:
  - jemoji
 
 # Build settings
-paginate: 1
+paginate: 6
 paginate_path: "page:num"
 
 highlighter: rouge

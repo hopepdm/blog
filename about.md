@@ -1,10 +1,18 @@
 ---
 layout: page
-title: About
+title: "关于我"
 permalink: /about/
 public: true
 ---
 
-Welcome to this website!
+欢迎访问我的博客!
 
-> This website is using [laobubu](http://laobubu.net)'s theme: [EasyBook](https://github.com/laobubu/jekyll-theme-EasyBook)
+> 该站点使用了 [laobubu](http://laobubu.net)的主题。
+
+> 后续我会增加一些好玩的内容和功能，敬请期待。
+
+博客于八月底刚成立，还在调试样式与风格，增加互动功能。
+
+我会每周更新内容，希望大家喜欢
+---
+
