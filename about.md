@@ -1,8 +1,9 @@
 ---
 layout: page
-title: "关于我"
+title: "About"
 permalink: /about/
 public: true
+nocomment: true
 ---
 
 欢迎访问我的博客!

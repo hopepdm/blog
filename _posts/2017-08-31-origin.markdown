@@ -15,4 +15,4 @@ permalink: /archivers/origin
 
 我在CSDN也有bolg，但是都是些随笔类的记述，格式和内容非本人难以看懂。本着分享的原则，我开通这个gitpage希望能督促自己更加认真和勤勉。后续我会将很多以前的内容搬运进来，同时更新更多的内容，并将bolg打造的更完善，希望大家喜欢。
 
-![](https://b-ssl.duitang.com/uploads/item/201602/15/20160215162505_Uedxn.jpeg)
+![](http://lorempixel.com/200/200/)
