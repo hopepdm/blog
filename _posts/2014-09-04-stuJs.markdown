@@ -1,0 +1,9 @@
+---
+layout: post
+title:  "精炼代码，提高js编程能力"
+date:   2017-09-04 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs
+---
+(https://www.zhihu.com/question/27048930)
+(http://paranimage.com/14-tips-to-improve-jquery-code/)
