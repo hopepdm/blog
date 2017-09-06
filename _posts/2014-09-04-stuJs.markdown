@@ -5,5 +5,14 @@ date:   2017-09-04 12:00:00
 categories: Javascript
 permalink: /archivers/stuJs
 ---
-(https://www.zhihu.com/question/27048930)
-(http://paranimage.com/14-tips-to-improve-jquery-code/)
+网上的资料林林总总，实在太多。目前属于吸收阶段，所以整理相关有用的链接，每个链接的知识各有侧重点。由于我目前的工作是threejs开发，所以除了js的基础以外，可能更多的关于threejs的知识。
+干货在下面：
+
+[程序猿如何避免写过多的业务代码](https://www.zhihu.com/question/27048930)
+
+[14条改善jq代码的技巧](http://paranimage.com/14-tips-to-improve-jquery-code/)
+
+[使用threejs轻松实现太阳系，非常适合初学者](https://zhuanlan.zhihu.com/p/20796329)
+
+[webvr目前十分火爆，这是github VRdemo](https://github.com/SoAanyip/WebVR-Boilerplate-CN/blob/master/index.html)
+[，demo](https://soaanyip.github.io/webvr-boilerplate-cn/index.html)
