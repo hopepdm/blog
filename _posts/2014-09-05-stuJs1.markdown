@@ -11,27 +11,27 @@ permalink: /archivers/stuJs1
 
 2、Three.js提供了几个相机控件，可以用来控制场景中的相机。当然你也可以自己绑定相关事件。
 
- example/js/controls
- FirstPersonControls：第一人称控件，键盘移动，鼠标转动 
- FlyControls：飞行器模拟控件，键盘和鼠标来控制相机的移动和转动 
- RollControls：翻滚控件，FlyControls的简化版，可以绕z轴旋转 
- TrackballControls：轨迹球控件，用鼠标来轻松移动、平移和缩放场景 
- OrbitControls：轨道控件，用于特定场景，模拟轨道中的卫星，可以用鼠标和键盘在场景中游走 
- PathControls：路径控件，相机可以沿着预定义的路径移动。可以四处观看，但不能改变自身的位置。
- [具体见该blog](http://blog.csdn.net/birdflyto206/article/details/52414382)
+> example/js/controls
+> FirstPersonControls：第一人称控件，键盘移动，鼠标转动 
+> FlyControls：飞行器模拟控件，键盘和鼠标来控制相机的移动和转动 
+> RollControls：翻滚控件，FlyControls的简化版，可以绕z轴旋转 
+> TrackballControls：轨迹球控件，用鼠标来轻松移动、平移和缩放场景 
+> OrbitControls：轨道控件，用于特定场景，模拟轨道中的卫星，可以用鼠标和键盘在场景中游走 
+> PathControls：路径控件，相机可以沿着预定义的路径移动。可以四处观看，但不能改变自身的位置。
+> [具体见该blog](http://blog.csdn.net/birdflyto206/article/details/52414382)
  
 3、vr设备中屏幕中心指向obj，当逗留时间较长时触发event。思路：设置一个定时器setTimeout,一定时间后执行；未到指定时间时，清空定时器即可。
 ```python
-    document.getElementById("ss").onmouseover = function () {
-		   var _this = this;
-		   ff = setTimeout(function(){
-		   _this.innerHTML = "hello";
-		   console.log(1)}, 200);	
-		};
-		document.getElementById("ss").onmouseout = function () {
-		    clearTimeout(ff);
-            this.innerHTML = "hi"; 		
-		};
+document.getElementById("ss").onmouseover = function () {
+	var _this = this;
+    ff = setTimeout(function(){
+	_this.innerHTML = "hello";
+	console.log(1)}, 200);	
+};
+document.getElementById("ss").onmouseout = function () {
+	clearTimeout(ff);
+    this.innerHTML = "hi"; 		
+};
 ```
 
 4、好好学习官网threejs的例子，基本够用了。
