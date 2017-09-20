@@ -1,0 +1,83 @@
+---
+layout: post
+title:  "js对象与this，不能再精简了"
+date:   2017-09-18 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs4
+---
+这篇文章源于我面试DTC时一道面试题，其内容涵盖很广，我经可能用最少的文字来说清楚js对象和this以及函数之间的关系。
+
+```Javascript
+function Foo() {
+    getName = function () { alert (1); };
+    return this;
+}
+Foo.getName = function () { alert (2);};
+Foo.prototype.getName = function () { alert (3);};
+var getName = function () { alert (4);};
+function getName() { alert (5);}
+
+//答案：
+Foo.getName();//2
+getName();//4
+Foo().getName();//1
+getName();//1
+new Foo.getName();//2
+new Foo().getName();//3
+new new Foo().getName();//3
+```
+变异
+```Javascript
+function Foo() {
+    var getName = function () { alert (1); };
+    return this;
+}
+Foo.getName = function () { alert (2);};
+Foo.prototype.getName = function () { alert (3);};
+var getName = function () { alert (4);};
+function getName() { alert (5);}
+
+//答案：
+Foo.getName();//2
+getName();//4
+Foo().getName();//4
+getName();//4
+new Foo.getName();//2
+new Foo().getName();//3
+new new Foo().getName();//3
+```
+再变异
+```Javascript
+function Foo() {
+    this.getName = function () { alert (1); };
+    return this;
+}
+Foo.getName = function () { alert (2);};
+Foo.prototype.getName = function () { alert (3);};
+var getName = function () { alert (4);};
+function getName() { alert (5);}
+
+//答案：
+Foo.getName();//2
+getName();//4
+Foo().getName();//1
+getName();//1
+new Foo.getName();//2
+new Foo().getName();//1
+new new Foo().getName();//1
+```
+
+该题涉及js中变量提升、this指向、运算符优先级、原型、继承、全局变量污染、对象属性与原型属性优先级等等。
+
+我概括一下就是需要记住一下几点：
+* 1、变量提升，函数声明优先。
+* 2、函数内变量声明不用var，即隐式全局变量有的指向window有的是globe。这里有个知识点是delete能否删除成功的问题，查阅delete的具体用法咯，讲的很清楚。
+* 3、js运算符优先级，共19级，具体有一个表，就不列了，以new new Foo().getName()为例——>new ((new Foo()).getName)()
+* 4、构造函数一般是没有返回值的，new的时候返回其实例化对象。若真tm有，遵循以下规则：返回值类型为非引用类型或者this时，返回实例化对象，反之，返回其引用类型。
+* 5、先查询对象属性，找不到则追溯其原型属性，直至null，有点类似js词法作用域的方式，蛮好理解的。
+* 6、搞清js中内部属性（var x/obj.x这种写法也叫静态方法，无需实例化即可调用）、实例属性（this.x当x为方法时为特权方法，区别于原型写法的公共方法，特权方法能访问私有属性，公共方法则不行）、原型属性(obj.prototype.x)。其中，实例对象后实例属性和原型属性是公有的，而内部属性则是私有不能被调用的。
+
+我再稍微详细说下this，js中this总是指向调用函数的那个对象，只有三种种情况：
+* 1、纯函数中调用时，this指向window。
+* 2、当函数作为构造函数被实例化或者作为对象方法时，this指向对象自己。
+* 3、apply、call调用，更改this指向，当apply()中不传参时，指向全局对象。
