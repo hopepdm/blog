@@ -8,7 +8,7 @@ description: >
 
 # Your information
 #email: 563969790@qq.com
-author: Hopepdm
+author: Hope_pdm
 avatar: "/blog/image/1.jpg"
 profile: 旺财，你好呀！
 #twitter_username: twitter_username
@@ -26,7 +26,7 @@ plugins:
  - jemoji
 
 # Build settings
-paginate: 6
+paginate: 5
 paginate_path: "page:num"
 
 highlighter: rouge
