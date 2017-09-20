@@ -1,0 +1,78 @@
+---
+layout: post
+title:  "threejs模型加载详解"
+date:   2017-09-17 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs3
+---
+IIS指定MIME类型，便以请求obj，mtl数据。其类型为text/plain。
+
+3js支持多种格式的模型导入，但是常用的也就obj、json、js这几种格式。另外，有些时候，美术或工程部提供max文件，这时需要用3dmax将模型转为常用的格式。我们主要就来说说如何用threejs加载模型以及贴图文件。
+
+```javascript
+//最简单的mtl、obj同时加载
+<script src="js/three.js"></script>
+<script src="js/OrbitControls.js"></script>
+<script src="js/MTLLoader.js"></script>
+<script src="js/OBJLoader.js"></script>
+<!-- 你需要先引入这几个文件 -->
+···
+<!-- 把模型加载封装一下 -->
+function initMtlloader () {
+    var loaderMtl = new THREE.MTLLoader();
+    loaderMtl.setPath('model/');  //设置文件路径
+    loaderMtl.load('2032.mtl', function(obj1){
+        obj1.preload();
+        var loaderobj = new THREE.OBJLoader();
+        loaderobj.setMaterials(obj1);
+        loaderobj.load('model/2032.obj', function(obj2){
+            obj2.scale.set(1, 1, 1);
+            obj2.position.y = -100;
+            scene.add(obj2);
+        });
+    });
+}
+<!-- 完 -->
+```
+
+也可以单独加载obj
+
+```javascript
+<!-- 同样，封装一下 -->
+function initLoader () {
+    var loader = new THREE.OBJLoader();
+    loader.load('baiyuDCport/2032.obj', function(obj){
+        obj.scale.set(1, 1, 1);
+        obj.position.y = 100;
+        scene.add(obj);
+    });
+}
+```
+
+任性一下，加载js格式（obj转js不介绍了）。
+
+```javascript
+<!-- 加载js只需要three.js -->
+function loaderjs() {
+    var jsLoader = new THREE.JSONLoader();
+    jsLoader.load( 'convert_js/2032_2.js', function( geometry ,materials) {
+        var material = new THREE.MeshFaceMaterial(materials[0]);
+        var object = new THREE.Mesh(geometry, material);
+        object.scale.set(1, 1, 1);
+        object.position.set(100,0,0);
+        scene.add(object);
+    });
+}
+```
+
+加载模型并没有什么难度，我们要研究不同格式的模型的加载速度和实际效果，以针对项目具体需求。老大让我研究单器物obj和fbx两种格式，fbx又涉及到.max。不急，我们慢慢来。
+
+以银刀动态模型为例
+
+| 格式       | 文件大小 | 加载速度 |  是否支持动画| 使用分析 |
+| --------   | -----:  | :----:  |  :----:   |  :----:   |
+| .obj/.mtl  |  5.67M  |  1      |  否 | 加载简单，不需要动作时推荐使用|
+| .fbx       |  2.62M  |  1      | 支持 | 引入FBXLoader.js，据说有</br>无与伦比的互用性|
+| .js        |  7.07M  |  1      | 支持 | 几乎满足所有主流需求，但</br>是在导出时有很多细节|
+
+下面就加载这个动态模型

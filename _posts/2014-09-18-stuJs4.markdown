@@ -7,7 +7,7 @@ permalink: /archivers/stuJs4
 ---
 这篇文章源于我面试DTC时一道面试题，其内容涵盖很广，我经可能用最少的文字来说清楚js对象和this以及函数之间的关系。
 
-```Javascript
+```javascript
 function Foo() {
     getName = function () { alert (1); };
     return this;
@@ -27,7 +27,7 @@ new Foo().getName();//3
 new new Foo().getName();//3
 ```
 变异
-```Javascript
+```javascript
 function Foo() {
     var getName = function () { alert (1); };
     return this;
@@ -47,7 +47,7 @@ new Foo().getName();//3
 new new Foo().getName();//3
 ```
 再变异
-```Javascript
+```javascript
 function Foo() {
     this.getName = function () { alert (1); };
     return this;
