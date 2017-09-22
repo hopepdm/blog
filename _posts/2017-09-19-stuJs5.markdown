@@ -1,0 +1,65 @@
+---
+layout: post
+title:  "html元标签常用属性和方法及全屏设置"
+date:   2017-09-09 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs5
+---
+本章主要整理关于meta元标签的用法已经浏览器全屏，横竖屏等检测。
+
+大部分pc端浏览器能实现整个桌面全屏，下面给出pc端浏览器控制代码。
+
+```javascript
+this.canvas = document.documentElement;
+//启用全屏
+if (this.canvas.requestFullscreen) {
+    this.canvas.requestFullscreen();
+} else if (this.canvas.mozRequestFullScreen) {
+    this.canvas.mozRequestFullScreen();
+} else if (this.canvas.webkitRequestFullscreen) {
+    this.canvas.webkitRequestFullscreen();
+}   
+//取消全屏         
+if (this.canvas.exitFullscreen) {
+    this.canvas.exitFullscreen();
+} else if (this.canvas.mozCancelFullScreen) {
+    this.canvas.mozCancelFullScreen();
+} else if (this.canvas.webkitCancelFullscreen) {
+    this.canvas.webkitCancelFullScreen();
+}
+//你还可以对视频标签设置全屏显示
+//这个网站给出了对应的demo  http://robnyman.github.io/fullscreen/    
+
+````
+
+相比于pc端，手机端则复杂的多，大多通过meta元标签进行设置，同时部分手机浏览器支持全屏功能，有些不支持，比如iphone的safri。下面只给出部分解决思路。
+```html
+<!-- 启用 WebApp 全屏模式 -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<!-- uc强制竖屏 -->
+<meta name="screen-orientation" content="portrait">
+<!-- UC强制全屏 -->
+<meta name="full-screen" content="yes">
+<!-- UC应用模式 -->
+<meta name="browsermode" content="application">
+<!-- QQ强制竖屏 -->
+<meta name="x5-orientation" content="portrait">
+<!-- QQ强制全屏 -->
+<meta name="x5-fullscreen" content="true">
+<!-- QQ应用模式 -->
+<meta name="x5-page-mode" content="app">
+
+<!-- uc强制竖屏 -->
+<meta name="screen-orientation" content="portrait">
+<!-- QQ强制竖屏 -->
+<meta name="x5-orientation" content="portrait">
+<!-- UC强制全屏 -->
+<meta name="full-screen" content="yes">
+<!-- QQ强制全屏 -->
+<meta name="x5-fullscreen" content="true">
+
+<!--SEO优化-->
+<meta name="keywords" content="your tags" />
+<meta name="description" content="150 words" />
+```
+乍一看几乎全是meta，其实meta更能非常丰富，提供了有关页面的元信息。它位于HTML文档头部的<HEAD标记和<TITLE标记之间，它提供用户不可见的信息。meta标签通常用来为搜索引擎robots定义页面主题，或者是定义用户浏览器上的cookie；它可以用于鉴别作者，设定页面格式，标注内容提要和关键字；还可以设置页面使其可以根据你定义的时间间隔刷新自己,以及设置RASC内容等级，等等。
