@@ -1,0 +1,73 @@
+---
+layout: post
+title:  "node.js文件管理"
+date:   2017-10-23 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs8
+---
+
+本文参考博主：http://blog.csdn.net/qq_30100043/article/category/6420302
+
+1、文件读写
+
+```javascript
+//文件的操作需要引入fs模块，fs属于nodejs自带
+var fs = require('fs');
+
+//读取文件 readFile()
+fs.readFile('./test.txt', 'utf-8', function(err, data) {
+    if (err) {
+        throw err;
+    }
+    console.log('utf-8', data.toString());
+});
+
+//写文件 writeFile() ;写文件时会先清空文件
+fs.writeFile('.text.txt', 'content:test', function(err) {
+    if (err) {
+        throw err;
+    }
+    console.log('save');
+
+    //success test
+    fs.readFile('./text.txt', 'utf-8', function(err, data) {
+        if (err) {
+            throw err;
+        }
+        console.log(data);
+    });
+});
+
+//创建-目录 mkdir  mode是目录的权限，默认是0777
+fs.mkdir(path, [mode], callback);
+
+//读取-目录 readdir
+fs.readdir(path, callback);
+
+//删除-文件
+fs.unlink('./file.txt',callback);
+
+//删除-空文件夹 rmdir
+fs.rmdir(path, callback);
+
+//删除-文件夹
+function deleteall(path) {  
+    var files = [];  
+    if(fs.existsSync(path)) {  
+        files = fs.readdirSync(path);  
+        files.forEach(function(file, index) {  
+            var curPath = path + "/" + file;  
+            if(fs.statSync(curPath).isDirectory()) { // recurse  
+                deleteall(curPath);  
+            } else { // delete file  
+                fs.unlinkSync(curPath);  
+            }  
+        });  
+        fs.rmdirSync(path);  
+    }  
+};  
+
+//判断文件夹及文件是否存在 path 可以是文件夹路径也可以是文件
+fs.exists(path, callback);
+//
+```
