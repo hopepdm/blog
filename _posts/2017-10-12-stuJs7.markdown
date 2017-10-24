@@ -1,0 +1,69 @@
+---
+layout: post
+title:  "javascript之函数式编程"
+date:   2017-10-12 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs7
+---
+
+最近一直再看各大FE实验室的文章，其中JDC团队对前端开发工程师的概括极其到位：前端开发工程师不是新岗位，其前身是网页制作工程师，负责流程中的网页制作部分。前端开发工程师负责把UI设计师的设计理念还原，输出我们平时可浏览的网页，并将其拆分为具有清晰语义的结构文件，以及控制其外观的表现文件，为站点提供良好的可读性和兼容性以及性能，同时使其具有更为高效的维护体系。
+
+来自taobaofed的关于函数式编程的解释，下面两个例子很好的说明了函数式编程在某些时候的优势：代码量少，易于维护和复用，语义清晰，减少了变量的声明，横向延展性强。
+
+```javascript
+
+// 数组中每个单词，首字母大写
+
+// 一般写法
+const arr = ['apple', 'pen', 'apple-pen'];
+for(const i in arr){
+  const c = arr[i][0];
+  arr[i] = c.toUpperCase() + arr[i].slice(1);
+}
+
+console.log(arr);
+
+// 函数式写法一
+function upperFirst(word) {
+  return word[0].toUpperCase() + word.slice(1);
+}
+
+function wordToUpperCase(arr) {
+  return arr.map(upperFirst);
+}
+
+console.log(wordToUpperCase(['apple', 'pen', 'apple-pen']));
+
+// 函数式写法二
+console.log(arr.map(['apple', 'pen', 'apple-pen'], word => word[0].toUpperCase() + word.slice(1)));
+
+```
+
+```javascript
+
+// 优化写法 (嗯，你没看错，这就是 lodash 的链式写法)
+const utils = {
+  chain(a) {
+    this._temp = a;
+    return this;
+  },
+  sum(b) {
+    this._temp += b;
+    return this;
+  },
+  sub(b) {
+    this._temp -= b;
+    return this;
+  },
+  value() {
+    const _temp = this._temp;
+    this._temp = undefined;
+    return _temp;
+  }
+};
+
+console.log(utils.chain(1).sum(2).sum(3).sub(4).value());
+
+```
+
+函数式编程中的典型代表有高阶函数，柯里化，组合（composing），map映射。文中作者对函数式编程有自己的理解人为只要是以函数作为主要载体的都可以称为函数式编程。
