@@ -1,0 +1,99 @@
+---
+layout: post
+title:  "js之calss"
+date:   2017-10-24 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs9
+---
+
+一般生成实例对象的方法是new一个构造函数，ES6提供了更接近面向对象语言的写法，引入了class的概念。ES6中的class可以看作语法糖，通过class关键字来定义类。
+
+```javascript
+//es5 定义类 实例化时可 new 可 Point()
+function Point(x, y) {
+    this.x = x;
+    thix.y = y;
+}
+Point.prototype.showPoint = function () {
+    return '(' + this.x + ',' + this.y + ')';
+}
+
+//es6 定义类  实例化时必须用 new ,同时 不存在变量提升。也没有私有属性。想拥有私有属性需要变通的方式
+class Point {
+    //ES5 中的构造函数对应 ES6 中的构造方法
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        return Object.create(null);//构造方法默认返回实例对象，可不显式写明
+    }
+
+    //ES6 中定义方法时不需要加 function 关键字；同时方法之间不需要加``分号`，加了会报错
+    //ES6 中类的方法全部是定义在 prototype 上的！！！
+    showPoint() {
+        return '(' + this.x + ',' + this.y + ')';
+    }
+}
+//向 class 中添加方法
+Object.assign(Point.prototype, {
+  toString(){},
+  toValue(){}
+});
+
+//test ES6 class
+typeof Point;//'function'
+Point ===Point.prototype.constructor;// true
+
+//实例化 class
+class B {}
+let b = new B();
+
+b.constructor === B.prototype.constructor;// true
+
+// class 中定义的方法是不可枚举的，但是这些方法等同于全在prototype上，因此getOwnPrototypeNames有效
+Object.keys(Point.prototype)
+// []
+Object.getOwnPropertyNames(Point.prototype)
+// ["constructor","toString"]
+
+
+//类的属性名，可以采用表达式
+let methodName = 'getArea';
+class Square {
+  constructor(length) {
+    // ...
+  }
+
+  [methodName]() {
+    // ...
+  }
+}
+
+
+//内容实在太多，这里给一个 数组去重的方法，慢慢体会 ES6 的博大精深吧
+const s = new Set();
+
+[2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+
+for (let i of s) {
+  console.log(i);
+}
+// 2 3 5 4
+
+```
+
+非常有必要知道的判断对象类型的方法
+```javascript
+//typeof  返回类型
+typeof "John"                // 返回 string
+typeof 3.14                  // 返回 number
+typeof false                 // 返回 boolean
+typeof [1,2,3,4]             // 返回 object
+typeof {name:'John', age:34} // 返回 object
+typeof undefined             // undefined
+typeof null                  // object
+null === undefined           // false
+null == undefined            // true
+
+//instanceof 返回布尔值
+obj instanceof Object;//true 实例obj在不在Object构造函数中
+```
