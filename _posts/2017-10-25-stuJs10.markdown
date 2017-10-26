@@ -1,0 +1,169 @@
+---
+layout: post
+title:  "js奇技淫巧"
+date:   2017-10-25 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs10
+---
+
+1、预定义常用方法入口  提升性能
+
+```javascript
+(function(window, undefined) {
+    var
+        // 定义了一个对象变量，一个字符串变量，一个数组变量
+        class2type = {},
+        core_version = "1.10.2",
+        core_deletedIds = [],
+
+        // 保存了对象、字符串、数组的一些常用方法 concat push 等等...
+        core_concat = core_deletedIds.concat,
+        core_push = core_deletedIds.push,
+        core_slice = core_deletedIds.slice,
+        core_indexOf = core_deletedIds.indexOf,
+        core_toString = class2type.toString,
+        core_hasOwn = class2type.hasOwnProperty,
+        core_trim = core_version.trim;
+        //···
+})(window);
+
+
+//调用时借助 call
+jQuery.fn = jQuery.prototype = {
+    // ...
+
+    // 将 jQuery 对象转换成数组类型
+    toArray: function() {
+        // 调用数组的 slice 方法，使用预先定义好了的 core_slice ，节省查找内存地址时间，提高效率
+        // 相当于 return Array.prototype.slice.call(this)
+        return core_slice.call(this);
+    }
+}
+```
+
+2、hook钩子机制 采用表驱动方式
+
+```javascript
+// 如果不用钩子的情况
+// 考生分数以及父亲名
+function examinee(name, score, fatherName) {
+    return {
+        name: name,
+        score: score,
+        fatherName: fatherName
+    };
+}
+
+// 审阅考生们
+function judge(examinees) {
+    var result = {};
+    for (var i in examinees) {
+        var curExaminee = examinees[i];
+        var ret = curExaminee.score;
+        // 判断是否有后门关系
+        if (curExaminee.fatherName === 'xijinping') {
+            ret += 1000;
+        } else if (curExaminee.fatherName === 'ligang') {
+            ret += 100;
+        } else if (curExaminee.fatherName === 'pengdehuai') {
+            ret += 50;
+        }
+        result[curExaminee.name] = ret;
+    }
+    return result;
+}
+
+
+var lihao = examinee("lihao", 10, 'ligang');
+var xida = examinee('xida', 8, 'xijinping');
+var peng = examinee('peng', 60, 'pengdehuai');
+var liaoxiaofeng = examinee('liaoxiaofeng', 100, 'liaodaniu');
+
+var result = judge([lihao, xida, peng, liaoxiaofeng]);
+
+// 根据分数选取前三名
+for (var name in result) {
+    console.log("name:" + name);
+    console.log("score:" + score);
+}
+
+
+//hook机制
+//relationHook 是个钩子函数，用于表述关系得分
+let relationHook = {
+    'xijinping': 1000,
+    'ligang': 100,
+    'pengdehuai': 50
+    //新的关系只需要再次添加，而不需要 if else 判断
+}
+
+//考生信息
+function examinee(name, score, fatherName) {
+    return {
+        name: name,
+        score: score,
+        fatherName: fatherName
+    };
+}
+
+//审阅得分
+function judge(examinees) {
+    var result = {};
+    for (var i in examinees) {
+        var curExaminee = examinees[i];
+        var ret =curExaminee.score;
+        if (relationHook[ curExaminee.fatherName ]) {
+            ret += relationHook[ curExaminee.fatherName ];
+        }
+        result[ curExaminee.name ] = ret;
+    }
+    return result;
+}
+
+var lihao = examinee("lihao", 10, 'ligang');
+var xida = examinee('xida', 8, 'xijinping');
+var peng = examinee('peng', 60, 'pengdehuai');
+var liaoxiaofeng = examinee('liaoxiaofeng', 100, 'liaodaniu');
+
+var result = judge([lihao, xida, peng, liaoxiaofeng]);
+
+// 根据分数选取前三名
+for (var name in result) {
+    console.log("name:" + name);
+    console.log("score:" + result[name]);
+}
+
+```
+
+策略模式：将不变的部分和变化的部分隔开是每个设计模式的主题，而策略模式则是将算法的使用与算法的实现分离开来的典型代表。使用策略模式重构代码，可以消除程序中大片的条件分支语句。在实际开发中，我们通常会把算法的含义扩散开来，使策略模式也可以用来封装一系列的“业务规则”。只要这些业务规则指向的目标一致，并且可以被替换使用，我们就可以使用策略模式来封装他们。
+
+3、连贯接口
+
+无论 jQuery 如今的流行趋势是否在下降，它用起来确实让人大呼过瘾，这很大程度归功于它的链式调用，接口的连贯性及易记性。很多人将连贯接口看成链式调用，这并不全面，我觉得连贯接口包含了链式调用且代表更多。而 jQuery 无疑是连贯接口的佼佼者。
+
+链式调用：主要思想就是使代码流畅易读，更容易被理解
+
+命令查询通体：就是函数重载
+
+参数映射及处理：虽然方法的链式调用是非常普遍的，你可以很容易地在你的代码中实现，但是处理参数却不同，使用者可能传入各种奇怪的参数类型，而 jQuery 作者想的真的很周到，考虑了用户的多种使用场景，提供了多种对参数的处理。
+
+
+4、无 new 构造
+
+```javascript
+a = function(args) {
+    return new a.init(args);
+}
+
+a.prototype = {
+    init: function(args) {
+        //
+    }
+}
+
+a.prototype.init.prototype = a.prototype;
+```
+
+5、setTimeout in Jquery
+
+在 setTimeout 中触发的函数, 一定是在 DOM 准备完毕后触发。
