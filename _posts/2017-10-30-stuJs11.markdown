@@ -1,0 +1,113 @@
+---
+layout: post
+title:  "js调试技巧"
+date:   2017-10-30 12:00:00
+categories: Javascript
+permalink: /archivers/stuJs11
+---
+
+1、debugger断点
+
+```javascript
+if(unaction){
+    debugger;
+}
+```
+
+2、将对象以表格形式输出：console.table
+
+```javascript
+var animals = [
+    { animal: 'Horse', name: 'Henry', age: 43 },
+    { animal: 'Dog', name: 'Fred', age: 13 },
+    { animal: 'Cat', name: 'Frodo', age: 18 }
+];
+
+console.table(animals);
+```
+
+3、查看代码运行时间
+
+```javascript
+console.time('begin');
+
+var items = [];
+
+for(let i = 0; i < 1e5; i++) {
+    items.push({index: i});
+}
+
+console.timeEnd('begin');
+```
+
+4、获取某个函数运行的整个顺序
+
+```javascript
+var car;
+var func1 = function() {
+	func2();
+}
+var func2 = function() {
+	func4();
+}
+var func3 = function() {
+}
+var func4 = function() {
+	car = new Car();
+	car.funcX();
+}
+var Car = function() {
+	this.brand = ‘volvo’;
+	this.color = ‘red’;
+	this.funcX = function() {
+		this.funcY();
+	}
+	this.funcY = function() {
+		this.funcZ();
+	}
+ 	this.funcZ = function() {
+		console.trace(‘trace car’)
+	}
+}
+func1();
+
+//  VM525:24 trace car
+//  Car.funcZ @ VM525:24
+//  Car.funcY @ VM525:21
+//  Car.funcX @ VM525:18
+//  func4 @ VM525:12
+//  func2 @ VM525:6
+//  func1 @ VM525:3
+//  (anonymous) @ VM525:27
+
+```
+
+5、快速定位debug函数
+
+Type debug(car.funcY) in the console and the script will stop in debug mode when it gets a function call to car.funcY:
+
+6、自定义console日志
+
+```javascript
+console.todo = function(msg) {
+	console.log(‘ % c % s % s % s‘, ‘color: yellow; background - color: black;’, ‘–‘, msg, ‘–‘);
+}
+
+console.important = function(msg) {
+	console.log(‘ % c % s % s % s’, ‘color: brown; font - weight: bold; text - decoration: underline;’, ‘–‘, msg, ‘–‘);
+}
+
+console.todo(“This is something that’ s need to be fixed”);
+console.important(‘This is an important message’);
+```
+
+7、得知函数参数
+
+```javascript
+var func1 = function(x, y, z) {
+//....
+};
+monitor(func1);
+func1(1,2,3)
+//  function func1 called with arguments: 1, 2, 3
+```
