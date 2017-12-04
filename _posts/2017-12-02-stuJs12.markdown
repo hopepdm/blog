@@ -1,0 +1,103 @@
+---
+layout: post
+title:  "three.js粒子与标注的添加"
+date:   2017-12-2 12:00:00
+categories: Three.js
+permalink: /archivers/stuJs12
+---
+在3D展示中，你肯定想过如何给obj添加文字注解。这个时候有两种方法，一种是通过粒子sprite，另一种是控制dom元素。
+
+sprite实质上是一个canvas，通过2dcanvas渲染到3D的scene中。3D场景中的雪花，星星等微小的obj就是以sprite的方式来渲染的。在threejs中有一个类THREE.Sprite，具体用法如下：
+
+```javascript
+    //创建一个组
+    group = new THREE.Object3D();
+
+    var canvas = document.createElement('canvas'); //创建一个canvas
+    canvas.width = 200;
+    canvas.height = 200;
+    var ctx = canvas.getContext('2d');
+    var x = 17;
+    var y = 17;
+    var radius = 15;
+    var startAngle = 0;
+    var endAngle = Math.PI * 2;
+
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.beginPath();
+    ctx.arc(x, y, radius, startAngle, endAngle);
+    ctx.fill();
+    //···基本上你可以用canvas画出你想要的任何图像包括文本
+
+    var texture = new THREE.CanvasTexture(canvas); //创建纹理
+
+    var crateMaterial = new THREE.SpriteMaterial({
+        map: texture,
+        alphaTest: 0.5,
+        transparent: true,
+        depthTest: false,
+        depthWrite: false
+    });  //声明粒子的材质，老版本的threejs不一定有此类，具体查阅官方文档
+    sprite = new THREE.Sprite(crateMaterial);
+    sprite.position.set(1, 2, 0);
+    sprite.scale.set(1, 1, 1);
+
+    group.add(sprite);
+
+```
+
+以上就创建了一个粒子，你可以通过canvas'画'出文字注解的内容，或者做些其他有趣的事情。
+
+但是，很明显对熟悉canvas的人来说，以canvas的形式插入文本信息，着实很费劲，远不如直接操作dom来的轻松，写好css就可以啦。
+
+下面介绍第二种标注的方法。首先你得了解threejs中的坐标系——世界坐标。
+你只需要知道三点，一是obj的position属性，二是obj的matrixWorld属性，三是如何将世界坐标转平面坐标。。看下面的代码
+
+```javascript
+    //承接上面的sprite，下面这段代码介绍怎么将世界坐标转屏幕坐标
+    //首先你要知道，在一个group中的sprite，当你使用控制器转动group的时候，sprition.positon是不会发生变化的，这个时候sprite的真实世界坐标反映在sprite.matrixWorld.elements的12、13、14这三个元素上。知道了sprite的真实坐标，通过project方法就能转换成屏幕坐标了。由于vertor的范围是（-1，1）。所以真正的屏幕坐标还需在做个变换。有了屏幕坐标，咱直接操纵dom的位置不可以作为标注了哇！！。记得声明annotation的position为absolute哟。
+
+
+    var vector = new THREE.Vector3(sprite.matrixWorld.elements[12], sprite.matrixWorld.elements[13], sprite.matrixWorld.elements[14]);
+    var canvas1 = renderer.domElement;
+
+    vector.project(camera);
+
+    vector.x = Math.round((0.5 + vector.x / 2) * window.innerWidth);
+    vector.y = Math.round((0.5 - vector.y / 2) * window.innerHeight);
+
+    annotation.style.top = vector.y + "px";
+    annotation.style.left = vector.x + "px"; //annotation就是个包含文本的div了
+
+```
+[给你们个实例](https://manu.ninja/webgl-three-js-annotations)
+
+后话：
+three.js中canvasrenderer和webglrenderer的区别：
+webgl的渲染效果比canvas效果要好；
+canvas的兼容性比webgl好；
+canvas支持粒子效果，webgl虽然也可以做，但是较为复杂。
+
+```javascript
+
+var material = new THREE.SpriteCanvasMaterial({
+
+                color: 0x000000,
+                program: function(context) {
+
+                    context.beginPath();
+                    context.arc(0, 0, 0.5, 0, PI2, true);
+                    context.fill();
+
+                }
+
+            });
+			
+particle = new THREE.Sprite(material);
+scene.add(particle);
+
+```
+three.js渐变背景的方案：
+webGLRenderer中的属性alpha=true时，可以设置背景的透明度。
+此时setClearColor(color, 0);0表示完全透明。那么此时scene的背景色变成了canvas外div的背景色，可以应用css3
+设置为渐变背景。
