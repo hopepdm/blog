@@ -16,7 +16,7 @@ nocomment: true
 
 - 关于我
 
-![](https://hopepdm.github.io/blog/image/3.jpg)
+![](https://hopepdm.github.io/blog/image/33.jpg)
 
 $$ Me = \dfrac{WebGL+Three.js+Node.js+mongoDB}{HR - years} $$
 
