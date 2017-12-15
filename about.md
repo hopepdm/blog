@@ -14,7 +14,7 @@ nocomment: true
 
 博客于八月底刚成立，还在调试样式与风格，增加互动功能。
 
-##关于我
+*关于我
 
 $$ Me = \dfrac{WebGL+Three.js+Node.js+mongoDB}{HR - years} $$
 
