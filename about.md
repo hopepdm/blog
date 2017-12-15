@@ -14,7 +14,9 @@ nocomment: true
 
 博客于八月底刚成立，还在调试样式与风格，增加互动功能。
 
-*关于我
+- 关于我
+
+![](https://hopepdm.github.io/blog/image/3.jpg)
 
 $$ Me = \dfrac{WebGL+Three.js+Node.js+mongoDB}{HR - years} $$
 
@@ -28,7 +30,8 @@ qq：563969790
 
 我会每周更新内容，希望大家喜欢
 
-- 2017/12/14 更新ui，增加了webgl的效果
+> 2017/12/14 更新ui，增加了webgl的效果
+
 ---
 
 你可能会感兴趣的链接：
