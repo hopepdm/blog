@@ -1,0 +1,88 @@
+ES6规范要点以及常用规则
+
+1、let声明变量，声明变量仅在块及作用域内生效，此时类似c语言当中的变量声明
+	var a = [];
+    for (var i = 0; i < 10; i++) {
+        a[i] = function () {
+			console.log(i);
+		};
+	}
+	a[6](); // 10
+	上面代码中，变量i是var命令声明的，在全局范围内都有效，所以全局只有一个变量i。每一次循环，变量i的值都会发生改变，而循环内被赋给数组a的函数内部的console.log(i)，里面的i指向的就是全局的i。也就是说，所有数组a的成员里面的i，指向的都是同一个i，导致运行时输出的是最后一轮的i的值，也就是10。
+	
+	ps：当时用let时，不存在变量提升了。同时也不允许在同一个作用域用let声明同一个变量
+	
+		var tmp = 123;
+		if (true) {
+			tmp = 'abc'; // ReferenceError
+			let tmp;
+		}
+		暂时性死区，报错
+		
+		do表达式配合let
+		let x = do {
+			let t = f();
+			t * t + 1
+		} //=> x = t * t + 1;
+		
+2、const声明常量，可以是任意类型，同时，const声明的变量需立即初始化。ex. const PI = 3.14；const foo ;//error
+	es5有两种声明变量的方式var、function；而es6新增let、const、class、promise。es6是es5的扩充，完美支持es5.
+
+3、顶层对象属性，浏览器下是window，node是gloabl。es6中let，const声明的变量不再与window挂钩
+	ex.	var a = 1;
+		// 如果在Node的REPL环境，可以写成global.a
+		// 或者采用通用方法，写成this.a
+		window.a // 1
+
+		let b = 1;
+		window.b // undefined
+		
+*4、数组的解构赋值，注意：不是给数组赋值，而是赋值的时候按照数组的模式进行变量赋值
+	ex.	let [foo, [[bar], baz]] = [1, [[2], 3]];
+		foo // 1
+		bar // 2
+		baz // 3
+
+		let [ , , third] = ["foo", "bar", "baz"];
+		third // "baz"
+
+		let [x, , y] = [1, 2, 3];
+		x // 1
+		y // 3
+
+		let [head, ...tail] = [1, 2, 3, 4];
+		head // 1
+		tail // [2, 3, 4]
+
+		let [x, y, ...z] = ['a'];
+		x // "a"
+		y // undefined
+		z // []
+		
+		//默认值
+		let [foo = true] = [];
+		foo // true
+
+		let [x, y = 'b'] = ['a']; // x='a', y='b'
+		let [x, y = 'b'] = ['a', undefined]; // x='a', y='b'
+		
+		let [x = 1] = [undefined];
+		x // 1
+
+		let [x = 1] = [null];
+		x // null
+		
+		等等。函数参数，字符串，对象，基本类型都能解构赋值。具体有7种途径会使用到，规则自行查阅，挺简单的。
+		交换变量的值/从函数返回多个值/函数参数定义
+		json数据提取/函数参数默认值/遍历Map结构/输入模块的指定方法
+
+5、es6对字符串、数值、函数、对象进行了扩展
+
+6、set数组去重，map方便获取键值
+
+7、promise异步编程解决方案/generator函数的异步解决方案/async函数
+
+8、calss
+
+9、module
+		

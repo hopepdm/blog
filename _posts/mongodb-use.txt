@@ -1,0 +1,30 @@
+windows下mongodb安装使用方法：
+1、下载相应的安装包，install。默认路径也好，自定义也好无所谓。
+2、安装完成之后，在安装目录下手动新建data文件夹（其实路径位置也是随便设置的，记住就好），data中再新建db和log两个文件夹分别表示数据库存储和日志路径。
+3、在bin文件路径下命令行打开（shift+右键，在此处打开cmd）。···\bin>mongod -dbpath=db文件夹路径 。回车，不要关掉本窗口，新打开cmd运行mongo。就启动mongodb啦
+
+这样很麻烦，每次启动要敲很多命令。你可以额外新建一个mongo.conf文件，内容是：
+	dbpath=D:···\data\db #数据库路径  
+	logpath=D:···\log\mongo.log #日志输出文件路径  
+	logappend=true #错误日志采用追加模式  
+	journal=true #启用日志文件，默认启用  
+	quiet=true #这个选项可以过滤掉一些无用的日志信息，若需要调试使用请设置为false  
+	port=27017 #端口号 默认为27017 
+	
+该文件与bin文件夹同目录。重新执行在bin目录下执行mongod --config=mongo.conf路径 --install --serviceName "MongoDB"。回车  
+>net start MongoDB。回车
+
+ex.   mongod --config "D:\Mongodb\mongod.cfg" --install --serviceName "MongoDB"
+      net start MongoDB
+	  这个命令要在管理员权限下的cmd运行，否则log文件中会提示连不上可恶的mongodb
+	  管理员权限cmd方式win+x a。打开cmd
+	  
+mongodb中常用命令：
+use dataName//创建或切换至当前数据库，新建数据库时show dbs是看不见的。需要插入内容
+show dbs//显示数据库
+db.dataNmae.insert({json})//插入数据
+db.dropDatabase()
+	
+nodejs学习入门之mongoose：http://www.cnblogs.com/zhongweiv/p/mongoose.html
+
+图片蒙板demo：http://developer.qietu.com/html/f2/jqueryfancybox/
