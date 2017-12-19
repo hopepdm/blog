@@ -3,7 +3,7 @@ layout: post
 title:  "three.js加载外部模型"
 date:   2017-12-06 12:00:00
 categories: Three.js
-permalink: /archivers/stuJs12
+permalink: /archivers/stuJs13
 ---
 theejs加载外部模型分为两部分，一部分是加载几何体，另一部分是加载贴图。模型可以单单只是几何体部分。模型又分为两大类，一类是动画模型，一类是静态模型。
 
