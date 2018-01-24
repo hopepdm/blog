@@ -1,0 +1,49 @@
+---
+layout: post
+title:  "详解shader，three.js"
+date:   2018-01-22 12:00:00
+categories: Three.js
+permalink: /archivers/stuJs14
+---
+three.js中常见的着色器代码是写在html中的
+
+```html
+<script id='vs' type='x-shader/x-vertex'>
+    //顶点着色器代码
+    varying vec2 vUv;
+    void main()
+    {    
+        // passing texture to fragment shader
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        //投影矩阵、模型矩阵、position顶点在物体坐标系中的位置
+    }
+</script>
+
+<script id='fs' type='x-shader/x-fragment'>
+    //片元着色器代码
+    varying vec2 vUv;
+    void main() {
+        gl_FragColor = vec4(vUv.x, vUv.y, 1.0, 1.0);
+    }
+</script>
+
+<!-- 引用着色器代码 -->
+<script>
+    //···
+    material = new THREE.ShaderMaterial( {
+        vertexShader:document.getElementById('vs').textContent,
+        fragmentShader:document.getElementById('fs').textContent
+    } );
+</script>
+```
+
+webgl定义了四种限定符，限定数据类型
+
+`const:`常量
+`attribute:`从js传递到顶点着色器中，每个顶点对应不同的值
+`uniform:`每个顶点/片元对应相同的值
+`varying:`从顶点着色器传递到片元着色器中。ps:片元着色器本身不能访问uv信息，如果需要得到这一值的话，需要从顶点着色器中传递过去。
+
+`uv:`three.js预设属性，代表了该顶点在UV映射时的横纵坐标
+
