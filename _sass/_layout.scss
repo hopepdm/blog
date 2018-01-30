@@ -12,7 +12,19 @@
 	line-height: $base-font-size * 2;
 	background-color: $header-bg;
 	padding: 10px;
-	margin: 0;
+    margin: 0;
+    background: linear-gradient(90deg,  #ffc700 0%, #e91e1e 33%, #6f27b0 66%, #00ff88 100%);
+    background-position: 100% 0;
+    animation: bgSize 5s infinite ease-in-out alternate;
+
+    @keyframes bgSize {
+        0% {
+            background-size: 300% 100%;
+        }
+        100% {
+            background-size: 100% 100%;
+        }
+    }
 	
 	&:after {
 		clear: both;

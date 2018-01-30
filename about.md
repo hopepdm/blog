@@ -32,6 +32,8 @@ qq：563969790
 
 > 2017/12/14 更新ui，增加了webgl的效果
 
+> 2018/01/30 增加了一个好玩的渐变色
+
 ---
 
 你可能会感兴趣的链接：
@@ -41,4 +43,6 @@ qq：563969790
 [three小飞机](https://hopepdm.github.io/xiaofeiji.html)
 
 [dom定位](https://hopepdm.github.io/)
+
+[css魔法](https://github.com/chokcoco/iCSS)
 
