@@ -3,7 +3,7 @@ layout: post
 title:  "详解shader，three.js"
 date:   2018-01-22 12:00:00
 categories: Three.js
-permalink: /archivers/stuJs14
+permalink: /archivers/stuJs15
 ---
 three.js中常见的着色器代码是写在html中的
 
