@@ -167,4 +167,4 @@ void main() {
 
 ```
 
-<iframe src="http://thebookofshaders.com/edit.php?log=180201033618" width='800px' height='800px' frameborder='0' srolling='no'> </iframe>
+<iframe src="https://thebookofshaders.com/edit.php?log=180201033618" width='700px' height='600px' frameborder='0' srolling='no'> </iframe>
