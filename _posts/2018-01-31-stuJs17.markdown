@@ -1,0 +1,136 @@
+---
+layout: post
+title:  "简介glsl"
+date:   2018-01-31 12:00:00
+categories: shader
+permalink: /archivers/stuJs17
+---
+
+glsl是一门类C语言，有着与C接近的语法特征。作为webgl的重要组成部分，glsl有着极高的性能优势和操作性。
+
+```GLSL
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+void main() {
+    vec4 red() {
+        return vec4(1.0, 0.0, 0.0, 1.0);
+    }
+    gl_FragColor = red();
+}
+```
+glsl有许多内建变量和数据类型
+gl_FragColor:
+vec4:四分量浮点向量，
+vec3:三分量浮点向量，
+vec2:二分量浮点向量
+
+int
+float
+bool
+
+预定义程序宏指令，它是预编译的一部分，所有的宏都以#开始。
+```GLSL
+#define //定义全局变量和基础条件运算（#ifdef、#endif）
+
+//GLSL语言并不保证变量自动转换。所以，所有的number类型都以浮点形式（.00）表示，否则可能编译出错。
+```
+
+由于显卡的架构，所有的线程输入值必须是统一的（uniform），而且必须为只读。他们的数据类型通常是：float、vec2、vec3、vec4、mat2、mat3、mat4、sampler2D、samplerCube。uniform值的数据类型前后需一致，而且在shader的开头设定精度后就定义。
+
+```GLSL
+#ifdef GL_ES
+prescision mediump float;
+#endif
+
+uniform vec2 u_resolution; //画布尺寸（宽高），gl_FragCoord.xy/u_resolution 就归一化了每个像素点的坐标，gl_FragColor.x（.y）
+uniform vec2 u_mouse; //鼠标位置
+uniform float u_time; //时间（加载后的秒数）
+
+//通过以上变量即可从时间和空间对每个像素点进行计算
+//业界传统是对每个uniform值前加前缀u_，但是依然有iResolution、iMouse、iTime等名字（ShaderToy.com）
+
+//GLSL支持常规的数学函数，sin()、cos()、abs()、min()、max()等等
+
+//gl_FragCoord的数据类型是vec4，但是他是变化的值varying
+```
+
+```html
+<body>
+    <div id="container"></div>
+    <script src="js/three.min.js"></script>
+    <script id="vertexShader" type="x-shader/x-vertex">
+        void main() {
+            gl_Position = vec4( position, 1.0 );
+        }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        uniform vec2 u_resolution;
+        uniform float u_time;
+
+        void main() {
+            vec2 st = gl_FragCoord.xy/u_resolution.xy;
+            gl_FragColor=vec4(st.x,st.y,0.0,1.0);
+        }
+    </script>
+    <script>
+        var container;
+        var camera, scene, renderer;
+        var uniforms;
+
+        init();
+        animate();
+
+        function init() {
+            container = document.getElementById( 'container' );
+
+            camera = new THREE.Camera();
+            camera.position.z = 1;
+
+            scene = new THREE.Scene();
+
+            var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
+
+            uniforms = {
+                u_time: { type: "f", value: 1.0 },
+                u_resolution: { type: "v2", value: new THREE.Vector2() }
+            };
+
+            var material = new THREE.ShaderMaterial( {
+                uniforms: uniforms,
+                vertexShader: document.getElementById( 'vertexShader' ).textContent,
+                fragmentShader: document.getElementById( 'fragmentShader' ).textContent
+            } );
+
+            var mesh = new THREE.Mesh( geometry, material );
+            scene.add( mesh );
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio( window.devicePixelRatio );
+
+            container.appendChild( renderer.domElement );
+
+            onWindowResize();
+            window.addEventListener( 'resize', onWindowResize, false );
+        }
+
+        function onWindowResize( event ) {
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            uniforms.u_resolution.value.x = renderer.domElement.width;
+            uniforms.u_resolution.value.y = renderer.domElement.height;
+        }
+
+        function animate() {
+            requestAnimationFrame( animate );
+            render();
+        }
+
+        function render() {
+            uniforms.u_time.value += 0.05;
+            renderer.render( scene, camera );
+        }
+    </script>
+</body>
+```
+<iframe src="https://hopepdm.github.io/webgl/shaders.html" width='400px' height='400px' frameborder='0' srolling='no'> </iframe>
