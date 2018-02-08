@@ -4,6 +4,7 @@ title:  "简介glsl"
 date:   2018-01-31 12:00:00
 categories: shader
 permalink: /archivers/stuJs17
+id: 1
 ---
 
 glsl是一门类C语言，有着与C接近的语法特征。作为webgl的重要组成部分，glsl有着极高的性能优势和操作性。
