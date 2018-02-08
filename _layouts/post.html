@@ -3,15 +3,31 @@ layout: default
 ---
 <div class="post">
 
-  <header class="post-header">
-    <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
-  </header>
+    <header class="post-header">
+        <h1 class="post-title">{{ page.title }}</h1>
+        <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta
+            }}{% endif %}</p>
+    </header>
 
-  <article class="post-content">
-    {{ content }}
-  </article>
-  
-  {% include comment.html %}
+    <article class="post-content">
+        {{ content }}
+    </article>
+
+    {% include comment.html %}
+
+    <div id="gitmentContainer"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment( {
+            owner: 'hopepdm',
+            repo: 'https://github.com/hopepdm/test.git',
+            oauth: {
+                client_id: '811d532cd89b77382ad7',
+                client_secret: '3ff2252a1161c3e8e357e5f8b37ccc079ae416d9',
+            },
+        } );
+        gitment.render( 'gitmentContainer' );
+    </script>
 
 </div>
