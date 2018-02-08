@@ -20,6 +20,7 @@ layout: default
     <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
     <script>
         var gitment = new Gitment( {
+            id: "{{ page.permalink }}",
             owner: 'hopepdm',
             repo: 'https://github.com/hopepdm/blog.git',
             oauth: {
@@ -27,7 +28,7 @@ layout: default
                 client_secret: '3ff2252a1161c3e8e357e5f8b37ccc079ae416d9',
             },
         } );
-        gitment.render( 'container' );
+        gitment.render( 'gitmentContainer' );
     </script>
 
 </div>
