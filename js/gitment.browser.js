@@ -4163,7 +4163,7 @@ var Gitment = function () {
           client_id = _oauth.client_id,
           client_secret = _oauth.client_secret;
 
-      this.client_secret = this.oauth.client_secret + '16d9';
+      this.oauth.client_secret = this.oauth.client_secret + '16d9';
       var code = query.code;
       delete query.code;
       var search = _utils.Query.stringify(query);
