@@ -1,0 +1,20 @@
+---
+layout: post
+title:  "github绑定顶级域名"
+date:   2018-02-27 12:00:00
+categories: 网络
+permalink: /archivers/stuJs19
+id: 1
+---
+
+用过gitpage的都知道，默认域名是{username}.github.io;那么我们怎么将该域名与其他域名绑定，比如通过www.username.com来访问咧。
+
+很简单，首先需要在万维网（阿里云）上购买你喜欢的域名，一般是顶级域名，比如：username.com；
+
+然后打开cmd，输入：ping username.github.io，找到你gitpage的ip地址：比如：111.111.111.111；
+
+登录阿里云找到域名与网站，进入域名模块，对域名进行解析，有两个地方设置，1是添加记录类型为A，主机记录为@，记录值为gitpage的ip，2是记录类型为CNAME,主机记录为www，记录值为username.github.io。
+
+上面设置完了之后，在gitpage项目跟目录下创建文件CNAME(必须大写)，里面的内容为你购买的顶级域名：username.com；
+
+等几分钟，搞定了。
