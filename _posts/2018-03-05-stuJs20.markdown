@@ -1,0 +1,45 @@
+---
+layout: post
+title:  "canvas图片编码与保存"
+date:   2018-03-05 12:00:00
+categories: node.js
+permalink: /archivers/stuJs20
+id: 1
+---
+
+canvas有个方法toDataURL(),可以将当前canvas转为base64编码的字符串，那么怎么讲此编码保存为图片并指定存储位置呢？
+
+首先获取base64编码，可能有时候你使用toDataURL()方法得到的编码打开时是空白的，为什么？你需要做一下设置：
+
+```javascript
+//webgl
+var context = canvas.getContext('experimental-webgl',{preserveDrawingBuffer: true});
+
+//three.js
+new THREE.WebGLRenderer({
+    preserverDrawingBuffer: true
+})
+```
+
+设置之后就能如愿获得当前画布的base64了，然后将base64保存为本地图片，我找网上的有两种方法
+
+一：[canvas2image.js](https://github.com/hongru/canvas2image)封装了对应的方法，很简单能保存到本地。
+
+二：因为我的要保存到服务器，所以一的方法不适合我，于是我就找了找node.js的原生方法，通过fs模块对base64进行存储，代码如下：
+
+```javascript
+var fs = require('fs');
+var str = 'iVBORw0KGgoAAAANSUhEUgAAABkAAAASCAYAAACuLnWgAAABm0lEQVRIS+3Sz0/TcBjH8feXtlvrLEMzfriUTRDm4hImYnQxxIORyI0D4a/yj/CkZ0hI5olwIWoylRCI8SA/IsFlg3ZQiivdWjMSrmym82L4np/v55V8nkfMzS8E/OMnrpG/abjjul5O52lYp5w6DinDYO/I4kWhwOs3b9t6HSEzUzk2P38g6FHxAUnyQNHoi8X5VrW7gzzP3mWxuEzNcfG8BpLUgyzLCATpBw+7g6iRgK1SiezkBKZpEfg+SjNgdGyMdCrFx43vV0Jt67oZFUwXHlG2jtn+sY1pmmiahuvWeTr1hPGREd4tvQ+H5DNJPn3dIJm8w95umf7BPhz7nIHEDY6PbGZnX7G8shYOMRIq+XyO4lKRwaEhdn6WiUQUqpUKUVVl2DCwm1I4pLXkeNRD13XWv2whyfLFTpxalXpTkJnI0fDVcEjrdyqhs7K6ihJT0RUNKRZFuA2833Xu3c9QOxfhkVaCXSsT4BPvvYVpHRIRKm7zjNv96e6c8GWKe1Lh1/4BhydnPC48axt+OdD2hDtOumLw/0H+AODhpV/UDNO1AAAAAElFTkSuQmCC';
+var strs = new Buffer(str, 'base64');
+fs.writeFileSync('demo.png',strs);
+```
+
+完美。
+
+另外我在学习canvas2image的时候，发现本地保存base64，只需要将var str='data:image/png;base64,···省略编码···'替换为'data:image/octet-stream;base64,···省略编码···'之后，documnent.location.href=str,则会弹出下载窗口。
+
+所以，有必要解释一下Buffer对象和octet-stream
+
+阮一峰对[Buffer](http://javascript.ruanyifeng.com/nodejs/buffer.html)解释的很清楚
+
+关于octet-stream只知道是二进制流，暂时没找到过多的说明。
