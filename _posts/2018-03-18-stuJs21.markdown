@@ -2,7 +2,7 @@
 layout: post
 title:  "threejs效果tips"
 date:   2018-03-18 12:00:00
-categories: node.js
+categories: three.js
 permalink: /archivers/stuJs21
 id: 1
 ---

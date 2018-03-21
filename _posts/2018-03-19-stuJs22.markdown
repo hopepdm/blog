@@ -1,0 +1,56 @@
+---
+layout: post
+title:  "promise用法详解"
+date:   2018-03-19 12:00:00
+categories: es6
+permalink: /archivers/stuJs22
+id: 1
+---
+
+es6原生提供了promise对象，用于实现异步回调，以同步的写法实现异步过程，避免回调地狱。
+
+特点：1、对象的状态不受外界的影响。Promise对象代表一个异步操作，有三种状态：pending、fulfilled、rejected。只有异步操作的结果可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。Promise-承若，的名字也因此而来。2、一旦状态改编，就不会再变，任何时候都可以得到这个结果。promise对象状态的改变只有两种可能：从pending到resolved和从pending到rejected。
+
+优缺点：优点是避免回调地狱；缺点是promise无法取消，一旦新建就会立即执行，无法中途取消，内部抛出的错误不会反应到外部，当处于pending状态时无法得知目前进展到哪一阶段。
+
+用法：
+
+```javascript
+var promise = new Promise(function(resolve, reject) {
+    //异步处理
+    //处理结束后、调用resolve或reject
+})
+
+//实例
+var myFirstPromise = new Promise(function(resolve, reject){
+    //当异步代码执行成功时，我们才会调用resolve(...), 当异步代码失败时就会调用reject(...)
+    //在本例中，我们使用setTimeout(...)来模拟异步代码，实际编码时可能是XHR请求或是HTML5的一些API方法.
+    setTimeout(function(){
+        console.log('hhhh');
+		reject("failed!"); //代码正常执行！
+    }, 250);
+});
+ 
+myFirstPromise.then(function(successMessage){
+    //successMessage的值是上面调用resolve(...)方法传入的值.
+    //successMessage参数不一定非要是字符串类型，这里只是举个例子
+    console.log("Yay! " + successMessage);
+}).catch(function(error){
+	console.log(error);
+});
+//'hhhh'
+//'failed'
+
+
+//Promise构造函数挂载在window上，有resolve和reject方法
+var p = Promise.resolve('Hello');
+ 
+p.then(function (s){
+  console.log(s)
+});
+// Hello
+```
+
+注：performance对象用于精度度量、控制、增强浏览器的性能表现。
+
+
