@@ -147,6 +147,51 @@ func = func.before(func1).after(func3);
 func();
 
 ```
+私有变量 在对象内部使用'var'关键字来声明，而且它只能被私有函数和特权方法访问。
+私有函数 在对象的构造函数里声明（或者是通过var functionName=function(){...}来定义），它能被特权函数调用（包括对象的构造函数）和私有函数调用。
+特权方法 通过this.methodName=function(){...}来声明而且可能被对象外部的代码调用。它可以使用：this.特权函数() 方式来调用特权函数，使用 ：私有函数()方式来调用私有函数。
+公共属性 通过this.variableName来定义而且在对象外部是可以读写的。不能被私有函数所调用。
+公共方法 通过ClassName.prototype.methodName=function(){...}来定义而且可以从对象外部来调用。
+原型属性 通过ClassName.prototype.propertyName=someValue来定义。
+静态属性 通过ClassName.propertyName=someValue来定义。
 
+```javascript
+//构造函数  
+  
+function myConstructor(message){  
+        //公有属性  
+    this.myMessage = message;  
+        //私有属性  
+    var separator = '_';  
+    var myOwner = this;  
+    //构造函数内私有方法  
+    function alertMessage(){  
+        alert(myOwner.myMessage);  
+    }  
+    alertMessage();  
+    //特权方法 可以访问构造函数里的私有变量  
+    this.appendToMessage = function(string){  
+        this.myMessage += separator + string;  
+        alertMessage();  
+    }  
+  }  
+  
+//公有方法  
+  
+myConstructor.prototype.clearMessage = function(str){  
+   this.myMessage = "";  
+}  
+  
+//静态成员  
+myConstructor.name = "jeff";  
+  
+//静态方法  
+myConstructor.alertName = function (){  
+  alert(this.name)  
+}  
+  
+var obj = new myConstructor("hello !");  
+obj.appendToMessage("kate");  
+```
 链接：https://juejin.im/post/59df4f74f265da430f311909
 来源：掘金
