@@ -3,7 +3,7 @@ layout: post
 title:  "react笔记"
 date:   2018-03-20 12:00:00
 categories: react
-permalink: /archivers/stuJs22
+permalink: /archivers/stuJs23
 id: 1
 ---
 [参考git上react项目react-cnode](https://github.com/hopepdm/react-cnode)
