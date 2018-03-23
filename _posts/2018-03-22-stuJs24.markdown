@@ -1,0 +1,152 @@
+---
+layout: post
+title:  "js设计模式"
+date:   2018-03-22 12:00:00
+categories: JavaScript
+permalink: /archivers/stuJs24
+id: 1
+---
+```javascript
+//单例模式
+场景：一个单一对象，比如：弹窗，点击多少次只创建一次
+class CreateUser {
+    constructor(name) {
+        this.name = name;
+        this.getName();
+    }
+    getName() {
+        return this.name;
+    }
+}
+//代理实现单例
+var ProxyMode = (function(){
+    var instance = null;
+    return function(name) {
+        if(!instance) {
+            instance = new CreateUser(name);
+        }
+        return instance
+    }
+})() //由于闭包，导致变量instance始终存在于内存之中
+var a = new ProxyMode('aaa');
+var b = new ProxyMode('bbb');
+console.log(a === b);
+
+//策略模式
+//我认为比较简单的，策略类：可变，环境类：调用策略类的方法
+var levelObj = {
+    'a': function(b){
+        return b * 1
+    },
+    'b': function(b){
+        return b * 2
+    },
+    'c': function(b){
+        return b * 3
+    }
+}
+var calculateBouns = function(level, b){
+    return levelObj[level](b);
+}
+console.log(calculateBouns('a',1)) //1
+
+//代理模式
+//适用场景：图片懒加载的方式，先通过loading图占位，然后异步加载图片至img标签
+var imgFunc = (function() {
+    var imgNode = document.createElement('img');
+    document.body.appendChild(imgNode);
+    return {
+        setSrc: function(src) {
+            imgNode.src = src;
+        }
+    }
+})();
+var proxyImage = (function() {
+    var img = new Image();
+    img.onload = function() {
+        imgFunc.setSrc(this.src);
+    }
+    return {
+        setSrc: function(src) {
+            imgFunc.setSrc('./loading,gif');
+            img.src = src;
+        }
+    }
+})();
+proxyImage.setSrc('./pic.png');
+
+
+//中介者模式
+//中介者模式适用的场景：例如购物车需求，存在商品选择表单、颜色选择表单、购买数量表单等等，都会触发change事件，那么可以通过中介者来转发处理这些事件，实现各个事件间的解耦，仅仅维护中介者对象即可。
+var goods = {   //手机库存
+    'red|32G': 3,
+    'red|64G': 1,
+    'blue|32G': 7,
+    'blue|32G': 6,
+};
+//中介者
+var mediator = (function() {
+    var colorSelect = document.getElementById('colorSelect');
+    var memorySelect = document.getElementById('memorySelect');
+    var numSelect = document.getElementById('numSelect');
+    return {
+        changed: function(obj) {
+            switch(obj){
+                case colorSelect:
+                    //TODO
+                    break;
+                case memorySelect:
+                    //TODO
+                    break;
+                case numSelect:
+                    //TODO
+                    break;
+            }
+        }
+    }
+})();
+colorSelect.onchange = function() {
+    mediator.changed(this);
+};
+memorySelect.onchange = function() {
+    mediator.changed(this);
+};
+numSelect.onchange = function() {
+    mediator.changed(this);
+};
+
+
+//装饰者模式
+//在不改变对象自身基础之上，在程序运行期间给对象动态地添加方法
+Function.prototype.before = function(beforefn) {
+    var self = this;    //保存原函数引用
+    return function(){  //返回包含了原函数和新函数的 '代理函数'
+        beforefn.apply(this, arguments);    //执行新函数，修正this
+        return self.apply(this,arguments);  //执行原函数
+    }
+}
+Function.prototype.after = function(afterfn) {
+    var self = this;
+    return function(){
+        var ret = self.apply(this,arguments);
+        afterfn.apply(this, arguments);
+        return ret;
+    }
+}
+var func = function() {
+    console.log('2');
+}
+//func1和func3为挂载函数
+var func1 = function() {
+    console.log('1');
+}
+var func3 = function() {
+    console.log('3');
+}
+func = func.before(func1).after(func3);
+func();
+
+```
+
+链接：https://juejin.im/post/59df4f74f265da430f311909
+来源：掘金
