@@ -1,7 +1,7 @@
 # Site settings
 title: Hopepdm's Blog
 url: "https://hopepdm.github.io/"    # the protocol and hostname of your site, eg. `http://laobubu.github.io`
-baseurl: "" # the prefix of your site uri, eg. `/jekyll-theme-EasyBook` or just one slash `/`
+baseurl: "/blog" # the prefix of your site uri, eg. `/jekyll-theme-EasyBook` or just one slash `/`
 #timezone: Asia/Chongqing
 description: >
   One or more sentences introducing this blog.
