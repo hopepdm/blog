@@ -6,6 +6,8 @@ public: true
 nocomment: true
 ---
 
+[在线简历](https://hacknical.com/hopepdm/resume?locale=zh)
+
 欢迎访问我的博客!
 
 > 该站点使用了 [laobubu](http://laobubu.net)的主题。
