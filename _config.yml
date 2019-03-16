@@ -27,7 +27,7 @@ plugins:
 
 # Build settings
 paginate: 5
-paginate_path: "page:num"
+paginate_path: "/page:num"
 
 highlighter: rouge
 markdown: kramdown
