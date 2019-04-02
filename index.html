@@ -32,9 +32,9 @@ layout: default
   {% else %}
     <span class="previous">←</span>
   {% endif %}
-  <span class="page_number ">{{ paginator.page }} 😜 {{ paginator.total_pages }}</span>
+  <span class="page_number">{{ paginator.page }} 😜 {{ paginator.total_pages }}</span>
   {% if paginator.next_page %}
-    <a href="{{ paginator.next_page_path | prepend: site.baseurl }}" class="next">→</a>
+    <a href="{{ paginator.next_page_path | prepend: site.baseurl }} + '123'" class="next">→</a>
   {% else %}
     <span class="next ">→</span>
   {% endif %}
