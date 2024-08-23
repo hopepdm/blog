@@ -4,7 +4,9 @@ layout: default
 
 <div class="home">
   <a class="rss-link" href="{{ "/wuziqi.html" | prepend: site.baseurl }}">等风来</a>
-  <p><span class="page-heading">路阻且长</span><i class="page-heading2">孤独的人没有酒</i></p>
+  <p><span class="page-heading" id="audioPlay" title="播放">路阻且长</span><i title="暂停" id="audioPause" class="page-heading2">孤独的人没有酒</i>
+    <audio id="audioMp3" src="https://testingcf.jsdelivr.net/gh/nj-lizhi/song@master/audio/%E7%9C%8B%E8%A7%81/%E7%83%AD%E6%B2%B3.mp3"></audio>
+  </p>
 
   <ul class="post-list">
     {% for post in paginator.posts %}

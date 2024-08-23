@@ -296,6 +296,13 @@ var boid, boids;
 init();
 animate();
 
+document.querySelector('#audioPlay').addEventListener('click', () => {
+    document.querySelector('#audioMp3').play()
+})
+document.querySelector('#audioPause').addEventListener('click', () => {
+    document.querySelector('#audioMp3').pause()
+})
+
 function init() {
 
     camera = new THREE.PerspectiveCamera(75, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
