@@ -3,6 +3,7 @@
 &copy; 2017 {{ site.author }}
 </div>
 </footer>
+<div id="aplayer"></div>
 
 <script src="{{ "/js/easybook.js" | prepend: site.baseurl }}"></script>
 
@@ -11,3 +12,37 @@
 <script src="{{ "/js/CanvasRenderer.js" | prepend: site.baseurl }}"></script>
 <script src="{{ "/js/Bird.js" | prepend: site.baseurl }}"></script>
 <script src="{{ "/js/main.js" | prepend: site.baseurl }}"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.0/dist/APlayer.min.js"></script>
+<script>
+const ap = new APlayer({
+container: document.getElementById('aplayer'),
+audio: [{
+        name: '热河',
+        artist: 'lzB',
+        url: 'https://testingcf.jsdelivr.net/gh/nj-lizhi/song@master/audio/%E7%9C%8B%E8%A7%81/%E7%83%AD%E6%B2%B3.mp3',
+        // cover: 'cover.jpg'
+    }, {
+        name: '山阴路的夏天',
+        artist: 'lzB',
+        url: 'https://testingcf.jsdelivr.net/gh/nj-lizhi/song@main/audio/108%E4%B8%AA%E5%85%B3%E9%94%AE%E8%AF%8D/%E5%B1%B1%E9%98%B4%E8%B7%AF%E7%9A%84%E5%A4%8F%E5%A4%A9.mp3',
+    }, {
+        name: '被禁忌的游戏',
+        artist: 'lzB',
+        url: 'https://testingcf.jsdelivr.net/gh/nj-lizhi/song@main/audio/Imagine-2011/%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F.mp3'
+    },{
+        name: '关于郑州的记忆',
+        artist: 'lzB',
+        url: 'https://testingcf.jsdelivr.net/gh/nj-lizhi/song@main/audio/%E6%88%91%E4%BB%AC%E4%B9%9F%E7%88%B1%E5%8D%97%E4%BA%AC/%E5%85%B3%E4%BA%8E%E9%83%91%E5%B7%9E%E7%9A%84%E8%AE%B0%E5%BF%86.mp3'
+    },{
+        name: '和你在一起',
+        artist: 'lzB',
+        url: 'https://testingcf.jsdelivr.net/gh/nj-lizhi/song@main/audio/%E9%9B%B6%E7%A2%8E/%E8%80%81%E9%92%9F%20%E6%88%91%E5%92%8C%E4%BD%A0%E5%9C%A8%E4%B8%80%E8%B5%B7.mp3'
+    }, {
+        name: '结婚',
+        artist: 'lzB',
+        url: 'https://testingcf.jsdelivr.net/gh/nj-lizhi/song@main/audio/%E5%8C%97%E4%BA%AC%E4%B8%8D%E6%8F%92%E7%94%B5/%E7%BB%93%E5%A9%9A.mp3'
+    }]
+});
+</script>
