@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "03-25离开讯飞有感"
-date:   2026-04-20 12:00:00
+date:   2026-04-20 00:01:00
 categories: JavaScript
 permalink: /archivers/stuJs25
 id: 1
@@ -25,3 +25,20 @@ id: 1
 
 周一晚上会有一场面试，积极准备中。先写到这里吧～
 
+
+ps: 好久没更新博客了，今天更新遇到点bug这里记录下
+
+这通常说明你现在很可能“开了两套发布机制”：
+
+一套是你仓库里的自定义 Actions workflow，文件是 .github/workflows/jekyll-docker.yml
+另一套是仓库 Settings -> Pages 里仍然配置成了 Deploy from a branch，于是 GitHub Pages 自己又跑了一次内建部署
+如何屏蔽：
+
+打开 GitHub 仓库 Settings -> Pages
+找到 Build and deployment
+把 Source 切到 GitHub Actions
+不要再用 Deploy from a branch
+这样保留你自己的 workflow 后，pages-build-deployment 一般就不会再作为那种“分支发布”的内建流程重复触发了。
+
+刚开始部署更新后，页面打不开，发现是需要重新解析域名
+![](https://hopepdm.github.io/blog/image/log.jpg)
