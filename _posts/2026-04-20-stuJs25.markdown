@@ -41,4 +41,4 @@ ps: 好久没更新博客了，今天更新遇到点bug这里记录下
 这样保留你自己的 workflow 后，pages-build-deployment 一般就不会再作为那种“分支发布”的内建流程重复触发了。
 
 刚开始部署更新后，页面打不开，发现是需要重新解析域名
-![](https://hopepdm.github.io/blog/image/log.jpg)
+![](https://hopepdm.github.io/blog/image/log.png)
