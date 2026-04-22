@@ -30,4 +30,4 @@ ok，进入source面板的main.js中全局搜索对应的函数，注释Bm函数
 
 最后ctrl+s保存修改内容后，再移动到main.js资源标签上右键选择替换内容，改为加载本地的main.js。将事件监听器断点取消，刷新页面后就能够正常访问调试咯！
 
-![]
+![https://github.com/hopepdm/blog/blob/master/image/boss.png?raw=true]
