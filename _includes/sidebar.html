@@ -4,6 +4,7 @@
   <div class="col-box-title name">{{ site.author }}</div>
   <p>{{ site.profile }}</p>
   <p class="contact">
+    <a class="rss-link" href="{{ "/resume.html" | prepend: site.baseurl }}">简历</a>
     {% if site.github_username %}
     <a href="https://github.com/{{ site.github_username }}" target="_blank">GitHub</a>
     {% endif %}
