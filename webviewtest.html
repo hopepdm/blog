@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>拍照 · 下载 测试站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f5f7fb;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            padding: 16px;
+        }
+        .card {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 36px;
+            padding: 28px 22px 36px;
+            box-shadow: 0 20px 40px -12px rgba(0, 20, 30, 0.25);
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-weight: 500;
+            font-size: 1.5rem;
+            letter-spacing: -0.3px;
+            color: #0b1b2b;
+            margin-bottom: 20px;
+        }
+        .preview-box {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: #eef1f5;
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.5);
+            margin-bottom: 18px;
+        }
+        .preview-box img, .preview-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .placeholder-text {
+            color: #7c8b9a;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+            background: rgba(0,0,0,0.02);
+            padding: 12px 20px;
+            border-radius: 60px;
+            backdrop-filter: blur(2px);
+        }
+        .action-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+            margin-top: 6px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn {
+            flex: 1 1 140px;
+            min-width: 120px;
+            background: white;
+            border: none;
+            padding: 14px 10px;
+            border-radius: 80px;
+            font-weight: 500;
+            font-size: 1rem;
+            color: #1f2a3a;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0,0,0,0.03);
+            border: 1px solid #dbe0e8;
+            transition: 0.15s;
+            cursor: pointer;
+            background: #fafcff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            letter-spacing: 0.2px;
+        }
+        .btn-primary {
+            background: #1f2a3a;
+            border: 1px solid #1f2a3a;
+            color: white;
+            box-shadow: 0 6px 12px -6px rgba(20, 40, 70, 0.25);
+        }
+        .btn-primary:active {
+            background: #2f3e52;
+            transform: scale(0.97);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #c8d1dd;
+        }
+        .btn-outline:active {
+            background: #eef2f8;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(0.3);
+        }
+        .badge {
+            background: #eef2f8;
+            padding: 4px 12px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            color: #3d5065;
+            font-weight: 450;
+        }
+        .footnote {
+            margin-top: 22px;
+            color: #8698aa;
+            font-size: 0.75rem;
+            border-top: 1px solid #eef2f8;
+            padding-top: 18px;
+            width: 100%;
+            text-align: center;
+            letter-spacing: 0.2px;
+        }
+        .toast-message {
+            background: #1f2a3a;
+            color: white;
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            margin-top: 12px;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .toast-message.show {
+            opacity: 1;
+        }
+        .hidden {
+            display: none !important;
+        }
+        #videoPreview {
+            background: #0b1b2b;
+        }
+        .icon-symbol {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        /* 小屏优化 */
+        @media (max-width: 450px) {
+            .card { padding: 20px 16px 28px; }
+            .btn { min-width: 100px; padding: 12px 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card" role="main">
+        <h1>📱 测试工坊</h1>
+
+        <!-- 预览区域 -->
+        <div class="preview-box" id="previewContainer">
+            <div id="placeholderHint" class="placeholder-text">📷 点击「拍照」</div>
+            <img id="photoPreview" class="hidden" alt="预览照片" />
+            <video id="videoPreview" class="hidden" autoplay playsinline muted></video>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="action-grid">
+            <div class="btn-group">
+                <button class="btn btn-primary" id="cameraBtn">📸 拍照</button>
+                <button class="btn btn-outline" id="downloadBtn">⬇️ 下载 CSV</button>
+            </div>
+            <!-- 辅助状态 (拍照后显示“重新拍照”语义) -->
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <span id="statusBadge" class="badge">等待拍照</span>
+                <button id="resetCameraBtn" class="badge" style="background:transparent; border:1px solid #d0d9e5; cursor:pointer; padding:2px 14px; border-radius:40px; font-size:0.75rem; color:#2f4055;">↺ 重置</button>
+            </div>
+            <div id="toastMessage" class="toast-message">✔ 已保存</div>
+        </div>
+
+        <div class="footnote">
+            <span>点击「拍照」调用摄像头 · 确认后替换预览</span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // --- DOM refs ---
+            const previewContainer = document.getElementById('previewContainer');
+            const placeholderHint = document.getElementById('placeholderHint');
+            const photoPreview = document.getElementById('photoPreview');
+            const videoPreview = document.getElementById('videoPreview');
+            const cameraBtn = document.getElementById('cameraBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const resetCameraBtn = document.getElementById('resetCameraBtn');
+            const statusBadge = document.getElementById('statusBadge');
+            const toastMessage = document.getElementById('toastMessage');
+
+            // --- state ---
+            let stream = null;                 // 当前摄像头流
+            let isCameraActive = false;
+            let isPhotoCaptured = false;       // 是否已拍照（预览显示照片）
+            let currentPhotoDataURL = null;    // 用于保存/预览
+
+            // --- helper: toast ---
+            let toastTimer = null;
+            function showToast(text) {
+                toastMessage.textContent = text || '✔ 完成';
+                toastMessage.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => {
+                    toastMessage.classList.remove('show');
+                }, 1800);
+            }
+
+            // --- 重置UI到初始状态 (释放摄像头) ---
+            function resetToPlaceholder() {
+                // 停止摄像头
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    stream = null;
+                }
+                isCameraActive = false;
+                isPhotoCaptured = false;
+                currentPhotoDataURL = null;
+
+                // 隐藏 video 和 img，显示占位
+                videoPreview.classList.add('hidden');
+                photoPreview.classList.add('hidden');
+                placeholderHint.classList.remove('hidden');
+                // 清空 src
+                videoPreview.srcObject = null;
+                photoPreview.src = '';
+                // 重置按钮文字
+                cameraBtn.innerHTML = '📸 拍照';
+                statusBadge.textContent = '等待拍照';
+                // 确保重置后不显示视频
+                if (videoPreview.style.display !== 'none') {
+                    // 额外保险
+                }
+                // 移除可能残留的样式
+                previewContainer.style.background = '#eef1f5';
+                showToast('已重置');
+            }
+
+            // --- 关闭摄像头 (不改变预览照片) ---
+            function stopCameraStream() {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    stream = null;
+                }
+                isCameraActive = false;
+                videoPreview.classList.add('hidden');
+                videoPreview.srcObject = null;
+                // 如果当前没有照片，显示占位；但不要覆盖已有照片
+                if (!isPhotoCaptured) {
+                    placeholderHint.classList.remove('hidden');
+                    photoPreview.classList.add('hidden');
+                } else {
+                    // 有照片时，确保视频隐藏，照片显示
+                    photoPreview.classList.remove('hidden');
+                    placeholderHint.classList.add('hidden');
+                }
+                // 更新按钮状态
+                cameraBtn.innerHTML = '📸 拍照';
+                // 如果处于无照片状态，状态更新
+                if (!isPhotoCaptured) {
+                    statusBadge.textContent = '等待拍照';
+                } else {
+                    statusBadge.textContent = '已拍照 ✓';
+                }
+            }
+
+            // --- 启动摄像头 ---
+            async function startCamera() {
+                // 如果已有流先关闭
+                if (stream) {
+                    stopCameraStream();
+                }
+                try {
+                    // 获取后置/前置摄像头 (环境/用户)
+                    const constraints = {
+                        video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 480 } }
+                    };
+                    // 如果浏览器不支持 facingMode，回退
+                    const mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: 'environment' }
+                    }).catch(() => {
+                        // 降级：获取任意摄像头
+                        return navigator.mediaDevices.getUserMedia({ video: true });
+                    });
+
+                    stream = mediaStream;
+                    isCameraActive = true;
+                    videoPreview.srcObject = stream;
+                    videoPreview.classList.remove('hidden');
+                    // 隐藏图片和占位
+                    photoPreview.classList.add('hidden');
+                    placeholderHint.classList.add('hidden');
+                    // 显示视频
+                    videoPreview.style.display = 'block';
+                    previewContainer.style.background = '#0b1b2b';
+
+                    // 更新按钮为“确认拍照”
+                    cameraBtn.innerHTML = '✔️ 确认拍照';
+                    statusBadge.textContent = '预览中 · 点击确认';
+                    // 如果之前有照片，清除照片状态（因为进入视频预览，旧照片不再显示）
+                    if (isPhotoCaptured) {
+                        isPhotoCaptured = false;
+                        currentPhotoDataURL = null;
+                        photoPreview.src = '';
+                        photoPreview.classList.add('hidden');
+                    }
+                } catch (err) {
+                    console.error('摄像头启动失败:', err);
+                    let msg = '无法访问摄像头';
+                    if (err.name === 'NotAllowedError') msg = '摄像头权限被拒绝';
+                    else if (err.name === 'NotFoundError') msg = '未检测到摄像头';
+                    else if (err.name === 'NotReadableError') msg = '摄像头被其他应用占用';
+                    showToast('❌ ' + msg);
+                    resetToPlaceholder();
+                    // 恢复初始占位
+                }
+            }
+
+            // --- 拍照: 从视频流抓取当前帧 ---
+            function capturePhotoFromVideo() {
+                if (!stream || !isCameraActive) {
+                    showToast('请先打开摄像头');
+                    return false;
+                }
+                // 从 video 中抓帧
+                const video = videoPreview;
+                if (video.readyState < 2) {
+                    showToast('⏳ 视频流未就绪');
+                    return false;
+                }
+                try {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth || 640;
+                    canvas.height = video.videoHeight || 480;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const dataURL = canvas.toDataURL('image/png');
+
+                    // 更新预览 (显示图片)
+                    photoPreview.src = dataURL;
+                    photoPreview.classList.remove('hidden');
+                    placeholderHint.classList.add('hidden');
+                    // 隐藏视频
+                    videoPreview.classList.add('hidden');
+                    videoPreview.style.display = 'none';
+                    // 保存状态
+                    currentPhotoDataURL = dataURL;
+                    isPhotoCaptured = true;
+                    // 关闭摄像头流 (释放资源)
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                        stream = null;
+                    }
+                    isCameraActive = false;
+                    previewContainer.style.background = '#eef1f5';
+
+                    // 更新按钮文字
+                    cameraBtn.innerHTML = '📸 重新拍照';
+                    statusBadge.textContent = '已拍照 ✓';
+                    showToast('📸 照片已保存');
+                    return true;
+                } catch (e) {
+                    console.error('拍照失败:', e);
+                    showToast('❌ 拍照失败');
+                    return false;
+                }
+            }
+
+            // --- 处理「拍照/确认」按钮逻辑 ---
+            function handleCameraAction() {
+                // 如果当前是“重新拍照”状态 (有照片)
+                if (isPhotoCaptured) {
+                    // 重新拍照：启动摄像头，覆盖之前的照片
+                    // 清除照片状态，但保持ui干净
+                    isPhotoCaptured = false;
+                    currentPhotoDataURL = null;
+                    photoPreview.src = '';
+                    photoPreview.classList.add('hidden');
+                    // 启动摄像头
+                    startCamera().then(() => {
+                        // 启动后，按钮变为 “确认拍照”
+                        cameraBtn.innerHTML = '✔️ 确认拍照';
+                        statusBadge.textContent = '预览中 · 点击确认';
+                    }).catch(() => {
+                        // 启动失败恢复占位
+                        resetToPlaceholder();
+                    });
+                    return;
+                }
+
+                // 如果摄像头已激活（视频预览模式） => 确认拍照
+                if (isCameraActive && stream) {
+                    const success = capturePhotoFromVideo();
+                    if (success) {
+                        // 照片已经保存，按钮变成 “重新拍照”
+                        cameraBtn.innerHTML = '📸 重新拍照';
+                        statusBadge.textContent = '已拍照 ✓';
+                        // 确保视频已隐藏
+                    } else {
+                        // 拍照失败，保留摄像头
+                    }
+                    return;
+                }
+
+                // 默认：启动摄像头 (首次点击)
+                if (!isCameraActive && !isPhotoCaptured) {
+                    startCamera().then(() => {
+                        // startCamera 里已经设置按钮文字
+                    }).catch(() => {
+                        resetToPlaceholder();
+                    });
+                } else {
+                    // 容错：如果状态异常，重置
+                    resetToPlaceholder();
+                }
+            }
+
+            // --- 下载 CSV (模拟纯文本表格) ---
+            function downloadCSV() {
+                // 构造 mock 数据：几组简单数字
+                const rows = [
+                    ['序号', '数值A', '数值B', '随机C'],
+                    ['1', '12', '34', '56'],
+                    ['2', '78', '90', '12'],
+                    ['3', '34', '56', '78'],
+                    ['4', '90', '12', '34'],
+                    ['5', '56', '78', '90'],
+                ];
+                // 转为 CSV 文本
+                const csvContent = rows.map(row => row.join(',')).join('\n');
+                // 添加 BOM 以便 Excel 识别 UTF-8
+                const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                const timestamp = new Date().toISOString().slice(0,19).replace(/[:-]/g, '');
+                link.download = `sample_data_${timestamp}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showToast('⬇️ CSV 已下载');
+            }
+
+            // --- 重置按钮 (关闭摄像头 + 清空照片) ---
+            function handleReset() {
+                resetToPlaceholder();
+                // 额外保险
+                photoPreview.classList.add('hidden');
+                photoPreview.src = '';
+                placeholderHint.classList.remove('hidden');
+                videoPreview.classList.add('hidden');
+                videoPreview.srcObject = null;
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    stream = null;
+                }
+                isCameraActive = false;
+                isPhotoCaptured = false;
+                currentPhotoDataURL = null;
+                cameraBtn.innerHTML = '📸 拍照';
+                statusBadge.textContent = '等待拍照';
+                previewContainer.style.background = '#eef1f5';
+                // 隐藏可能残留的视频显示
+                videoPreview.style.display = 'none';
+                // 确保占位可见
+                placeholderHint.classList.remove('hidden');
+                // 清空图片
+                photoPreview.src = '';
+                showToast('↺ 已重置');
+            }
+
+            // --- 事件绑定 ---
+            cameraBtn.addEventListener('click', handleCameraAction);
+
+            downloadBtn.addEventListener('click', downloadCSV);
+
+            resetCameraBtn.addEventListener('click', handleReset);
+
+            // --- 额外：页面关闭时释放摄像头 ---
+            window.addEventListener('beforeunload', function() {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+            });
+
+            // --- 初始化状态 ---
+            resetToPlaceholder();
+
+            // 对于iOS safari 需要额外处理点击触发权限
+            // 但通过用户手势触发 getUserMedia 已满足
+
+            console.log('📱 测试站已启动 (拍照 + CSV下载)');
+        })();
+    </script>
+</body>
+</html>
